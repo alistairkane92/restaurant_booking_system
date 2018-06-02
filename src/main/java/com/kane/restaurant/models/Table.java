@@ -15,4 +15,6 @@ public class Table {
         this.capacity = capacity;
         this.previouslyBookedCustomers = new HashSet<Customer>();
     }
+
+
 }
