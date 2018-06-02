@@ -5,7 +5,9 @@ import java.util.Set;
 public class Table {
     private int id;
     private Set<Customer> customers;
+    private int capacity;
 
-    public Table() {
+    public Table(int capacity) {
+        this.capacity = capacity;
     }
 }
