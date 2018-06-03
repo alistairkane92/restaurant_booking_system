@@ -19,11 +19,11 @@ public class Customer {
     public Customer(String name, String email) {
         this.email = email;
         this.name = name;
-        this.bookings = new HashSet<Booking>();
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     public int getId() {
         return id;
     }
