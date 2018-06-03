@@ -12,11 +12,11 @@ public class Runner {
         DBHelper.deleteAll(Booking.class);
         DBHelper.deleteAll(Customer.class);
 
-        Customer customer1 = new Customer("ally@codeclan.com", "Ally");
+        Customer customer1 = new Customer("Ally", "ally@codeclan.com");
         DBHelper.save(customer1);
-        Customer customer2 = new Customer("alan@codeclan.com", "Alan");
+        Customer customer2 = new Customer("Alan", "alan@codeclan.com");
         DBHelper.save(customer2);
-        Customer customer3 = new Customer("upul@codeclan.com", "Upul");
+        Customer customer3 = new Customer("Upul", "upul@codeclan.com");
         DBHelper.save(customer3);
 
         Table table1 = new Table(4);
@@ -33,17 +33,18 @@ public class Runner {
         DBHelper.save(table6);
         Table table7 = new Table(12);
         DBHelper.save(table7);
+
+        GregorianCalendar date1 = new GregorianCalendar();
+        date1.set(2018, Calendar.OCTOBER, 20);
+
+        GregorianCalendar date2 = new GregorianCalendar();
+        date1.set(2018, Calendar.OCTOBER, 22);
+
+        GregorianCalendar date3 = new GregorianCalendar();
+        date1.set(2018, Calendar.OCTOBER, 12);
 //
-//        GregorianCalendar date1 = new GregorianCalendar();
-//        date1.set(2018, Calendar.OCTOBER, 20);
-//
-//        GregorianCalendar date2 = new GregorianCalendar();
-//        date1.set(2018, Calendar.OCTOBER, 22);
-//
-//        GregorianCalendar date3 = new GregorianCalendar();
-//        date1.set(2018, Calendar.OCTOBER, 12);
-//
-//        Booking booking1 = new Booking(customer1, 5, date1);
+        Booking booking1 = new Booking(customer1, 5, date1);
+        DBHelper.save(booking1);
 //        Booking booking2 = new Booking(customer2, 8, date2);
 //        Booking booking3 = new Booking(customer3, 2, date3);
     }

@@ -9,12 +9,12 @@ import java.util.Calendar;
 import java.util.Set;
 
 @Entity
-@Table(name="bookings")
+@javax.persistence.Table(name="bookings")
 public class Booking {
     private int id;
     private Customer customer;
     private int quantity;
-    private Set<Table> tables;
+    private Set<com.kane.restaurant.models.Table> tables;
     private Calendar time;
 
     public Booking() {
@@ -56,16 +56,15 @@ public class Booking {
         this.quantity = quantity;
     }
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name="bookings_and_tables",
-//        joinColumns = {@JoinColumn(name = "booking_id")},
-//        inverseJoinColumns = {@JoinColumn(name = "table_id")})
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    public Set<Table> getTables() {
-//        return tables;
-//    }
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name="bookings_and_tables",
+        joinColumns = {@JoinColumn(name = "booking_id")},
+        inverseJoinColumns = {@JoinColumn(name = "table_id")})
+    public Set<com.kane.restaurant.models.Table> getTables() {
+        return tables;
+    }
 
-    public void setTables(Set<Table> tables) {
+    public void setTables(Set<com.kane.restaurant.models.Table> tables) {
         this.tables = tables;
     }
 

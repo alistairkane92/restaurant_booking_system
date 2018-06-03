@@ -34,14 +34,13 @@ public class Table {
         this.id = id;
     }
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name="bookings_and_tables",
-//            joinColumns = {@JoinColumn(name = "table_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "booking_id")})
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    public Set<Booking> getBookings() {
-//        return bookings;
-//    }
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name="bookings_and_tables",
+            joinColumns = {@JoinColumn(name = "table_id")},
+            inverseJoinColumns = {@JoinColumn(name = "booking_id")})
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
 
     public void setBookings(Set<Booking> bookings) {
         this.bookings = bookings;
