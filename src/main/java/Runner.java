@@ -20,12 +20,19 @@ public class Runner {
         DBHelper.save(customer3);
 
         Table table1 = new Table(4);
+        DBHelper.save(table1);
         Table table2 = new Table(4);
+        DBHelper.save(table2);
         Table table3 = new Table(2);
+        DBHelper.save(table3);
         Table table4 = new Table(4);
+        DBHelper.save(table4);
         Table table5 = new Table(4);
+        DBHelper.save(table5);
         Table table6 = new Table(6);
+        DBHelper.save(table6);
         Table table7 = new Table(12);
+        DBHelper.save(table7);
 //
 //        GregorianCalendar date1 = new GregorianCalendar();
 //        date1.set(2018, Calendar.OCTOBER, 20);
