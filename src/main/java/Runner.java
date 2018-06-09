@@ -40,9 +40,6 @@ public class Runner {
         GregorianCalendar date2 = new GregorianCalendar();
         date1.set(2018, Calendar.OCTOBER, 22);
 
-        GregorianCalendar date3 = new GregorianCalendar();
-        date1.set(2018, Calendar.OCTOBER, 12);
-
         Booking booking1 = new Booking(customer1, 4, date1, "Peanut allergy");
         DBHelper.save(booking1);
 
