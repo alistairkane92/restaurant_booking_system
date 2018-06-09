@@ -2,6 +2,7 @@ package com.kane.restaurant.controllers;
 
 import com.kane.restaurant.db.DBHelper;
 import com.kane.restaurant.models.Customer;
+import com.kane.restaurant.models.Table;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 
@@ -24,7 +25,9 @@ public class BookingController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setCalendar(today);
             List<Customer> allCustomers = DBHelper.getAllByAscending("name", Customer.class);
+            List<Table> allTables = DBHelper.getAllByAscending("capacity", Table.class);
 
+            model.put("biggestTableCapacity", allTables.get(allTables.size() - 1).getCapacity());
             model.put("customers", allCustomers);
             model.put("todaysDate", sdf.format(today.getTime()));
             model.put("template", "/templates/bookings/new.vtl");
