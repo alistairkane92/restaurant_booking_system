@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Calendar;
@@ -81,6 +82,24 @@ public class DBHelper {
         return results;
     }
 
+    public static <T> List<T> getAllTablesByNumberOfSeats() {
+        session = db.HibernateUtil.getSessionFactory().openSession();
+        List<T> results = null;
+        try {
+            transaction = session.beginTransaction();
+            Criteria cr = session.createCriteria(Table.class);
+            cr.addOrder(Order.desc("capacity"));
+            results = cr.list();
+            transaction.commit();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return results;
+    }
+
     public static <T> T find(int id, Class classType) {
         session = db.HibernateUtil.getSessionFactory().openSession();
         T result = null;
@@ -98,39 +117,24 @@ public class DBHelper {
         return result;
     }
 
-    public static void makeBooking(Customer customer, Booking booking, Table table){
-        //customer to booking
-       customer.addBooking(booking);
-
-       //booking to table
-       table.addBooking(booking);
-
-       //persist
-        save(booking);
-        save(customer);
-        save(table);
-    }
-
     public static void addTableToBooking(Table table, Booking booking){
         table.addBooking(booking);
         booking.addTable(table);
         save(booking);
     }
 
-    public static boolean findTable(Customer customer, Calendar date, int numberToSit, String additionalComment) {
-        List<Table> allTables = getAll(Table.class);
+    public static boolean makeBooking(Booking booking) {
+        List<Table> allTables = getAllTablesByNumberOfSeats();
+        int numberToSit = booking.getQuantity();
 
         for (Table table : allTables){
-            if (!table.hasDuplicateBooking(date) && (table.getCapacity() > numberToSit)){
-                Booking newBooking = new Booking(customer, numberToSit, date, additionalComment);
-                save(newBooking);
-                table.addBooking(newBooking);
-                save(table);
-                save(newBooking);
-                return true;
+            if (!table.hasDuplicateBooking(booking.getTime())) {
+                addTableToBooking(table, booking);
+                numberToSit -= table.getCapacity();
+                if (numberToSit == 0) break;
             }
         }
-//
-//        return false;
-//    }
+
+        return (numberToSit == 0);
+    }
 }
