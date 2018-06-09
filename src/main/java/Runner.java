@@ -42,10 +42,11 @@ public class Runner {
 
         GregorianCalendar date3 = new GregorianCalendar();
         date1.set(2018, Calendar.OCTOBER, 12);
-//
-        Booking booking1 = new Booking(customer1, 5, date1);
+
+        Booking booking1 = new Booking(customer1, 4, date1, "Peanut allergy");
         DBHelper.save(booking1);
-//        Booking booking2 = new Booking(customer2, 8, date2);
-//        Booking booking3 = new Booking(customer3, 2, date3);
+
+        DBHelper.addTableToBooking(table1, booking1);
+        DBHelper.addTableToBooking(table2, booking1);
     }
 }

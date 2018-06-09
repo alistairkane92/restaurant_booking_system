@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import javax.persistence.Table;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,14 +17,17 @@ public class Booking {
     private int quantity;
     private Set<com.kane.restaurant.models.Table> tables;
     private Calendar time;
+    private String additionalComment;
 
     public Booking() {
     }
 
-    public Booking(Customer booker, int quantity, Calendar bookingTime) {
+    public Booking(Customer booker, int quantity, Calendar bookingTime, String additionalComment) {
         this.customer = booker;
         this.quantity = quantity;
         this.time = bookingTime;
+        this.additionalComment = additionalComment;
+        this.tables = new HashSet<com.kane.restaurant.models.Table>();
     }
 
     @Id
@@ -75,5 +79,9 @@ public class Booking {
 
     public void setTime(Calendar time) {
         this.time = time;
+    }
+
+    public void addTable(com.kane.restaurant.models.Table table) {
+        this.tables.add(table);
     }
 }

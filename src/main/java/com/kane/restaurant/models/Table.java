@@ -1,9 +1,12 @@
 package com.kane.restaurant.models;
 
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,6 +41,7 @@ public class Table {
     @JoinTable(name="bookings_and_tables",
             joinColumns = {@JoinColumn(name = "table_id")},
             inverseJoinColumns = {@JoinColumn(name = "booking_id")})
+    @LazyCollection(LazyCollectionOption.FALSE)
     public Set<Booking> getBookings() {
         return bookings;
     }
@@ -52,5 +56,18 @@ public class Table {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public boolean hasDuplicateBooking(Calendar date){
+        for (Booking booking : this.bookings){
+            if (booking.getTime().equals(date)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addBooking(Booking newBooking){
+        this.bookings.add(newBooking);
     }
 }

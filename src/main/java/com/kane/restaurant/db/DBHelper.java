@@ -1,12 +1,18 @@
 package com.kane.restaurant.db;
 
+import com.kane.restaurant.models.Booking;
+import com.kane.restaurant.models.Customer;
+import com.kane.restaurant.models.Table;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 public class DBHelper {
     private static Transaction transaction;
@@ -91,4 +97,40 @@ public class DBHelper {
         System.out.println(result);
         return result;
     }
+
+    public static void makeBooking(Customer customer, Booking booking, Table table){
+        //customer to booking
+       customer.addBooking(booking);
+
+       //booking to table
+       table.addBooking(booking);
+
+       //persist
+        save(booking);
+        save(customer);
+        save(table);
+    }
+
+    public static void addTableToBooking(Table table, Booking booking){
+        table.addBooking(booking);
+        booking.addTable(table);
+        save(booking);
+    }
+
+    public static boolean findTable(Customer customer, Calendar date, int numberToSit, String additionalComment) {
+        List<Table> allTables = getAll(Table.class);
+
+        for (Table table : allTables){
+            if (!table.hasDuplicateBooking(date) && (table.getCapacity() > numberToSit)){
+                Booking newBooking = new Booking(customer, numberToSit, date, additionalComment);
+                save(newBooking);
+                table.addBooking(newBooking);
+                save(table);
+                save(newBooking);
+                return true;
+            }
+        }
+//
+//        return false;
+//    }
 }

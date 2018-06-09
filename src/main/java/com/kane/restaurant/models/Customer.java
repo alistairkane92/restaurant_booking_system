@@ -19,6 +19,7 @@ public class Customer {
     public Customer(String name, String email) {
         this.email = email;
         this.name = name;
+        this.bookings = new HashSet<Booking>();
     }
 
     @Id
@@ -57,5 +58,9 @@ public class Customer {
 
     public void setBookings(Set<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
     }
 }
