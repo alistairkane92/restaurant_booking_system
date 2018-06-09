@@ -4,9 +4,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,6 +63,7 @@ public class Booking {
     @JoinTable(name="bookings_and_tables",
         joinColumns = {@JoinColumn(name = "booking_id")},
         inverseJoinColumns = {@JoinColumn(name = "table_id")})
+    @LazyCollection(LazyCollectionOption.FALSE)
     public Set<com.kane.restaurant.models.Table> getTables() {
         return tables;
     }
@@ -98,4 +97,13 @@ public class Booking {
     public void addTable(com.kane.restaurant.models.Table table) {
         this.tables.add(table);
     }
+
+    public String formatTables() {
+        String result = "";
+        for (com.kane.restaurant.models.Table table : this.tables){
+            result += table.getTableNumber() + " ";
+        }
+        return result;
+    }
+
 }

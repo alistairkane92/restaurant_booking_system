@@ -6,6 +6,7 @@
         <th>Time</th>
         <th>Name</th>
         <th>Seating</th>
+        <th>Table</th>
         <th>Comments</th>
     </tr>
 #foreach ($booking in $bookings)
@@ -13,6 +14,7 @@
     <td>$booking.formatDate()</td>
     <td>$booking.getCustomer().getName()</td>
     <td>$booking.getQuantity()</td>
+    <td>$booking.formatTables()</td>
     <td>$booking.getAdditionalComment()</td>
 </tr>
 #end

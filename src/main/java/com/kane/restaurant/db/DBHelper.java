@@ -124,17 +124,18 @@ public class DBHelper {
         List<Table> allTables = getAllByAscending("capacity", Table.class);
         int numberToSit = booking.getQuantity();
 
+        //check for an appropriately sized table
         for (Table table : allTables){
             if (!table.hasDuplicateBooking(booking.getDate())) {
                 if (table.getCapacity() >= numberToSit){
                     addTableToBooking(table, booking);
                     numberToSit -= table.getCapacity();
-                    if (numberToSit == 0) break;
+                    if (numberToSit == 0) return true;
                 }
             }
         }
 
-        return (numberToSit == 0);
+        return false;
     }
 
     public static List<Booking> getBookingsByDate(Calendar calendar) {

@@ -1,6 +1,5 @@
 package com.kane.restaurant.models;
 
-import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -14,13 +13,15 @@ public class Table {
     private int id;
     private Set<Booking> bookings;
     private int capacity;
+    private int tableNumber;
 
     public Table() {
     }
 
-    public Table(int capacity) {
+    public Table(int capacity, int tableNumber) {
         this.capacity = capacity;
         this.bookings = new HashSet<Booking>();
+        this.tableNumber = tableNumber;
     }
 
     @Id
@@ -47,12 +48,22 @@ public class Table {
         this.bookings = bookings;
     }
 
+    @Column(name="capacity")
     public int getCapacity() {
         return capacity;
     }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    @Column(name="tableNumber")
+    public int getTableNumber() {
+        return tableNumber;
+    }
+
+    public void setTableNumber(int tableNumber) {
+        this.tableNumber = tableNumber;
     }
 
     public boolean hasDuplicateBooking(Calendar date){
