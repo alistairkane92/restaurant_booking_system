@@ -46,6 +46,11 @@ public class Runner {
         Booking booking1 = new Booking(customer1, 4, date1, "Peanut allergy");
         DBHelper.save(booking1);
 
+        Booking booking2 = new Booking(customer1, 7, date2, "");
+        DBHelper.save(booking2);
+
         DBHelper.makeBooking(booking1);
+//        DBHelper.makeBooking(booking2);
+
     }
 }

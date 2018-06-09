@@ -88,7 +88,7 @@ public class DBHelper {
         try {
             transaction = session.beginTransaction();
             Criteria cr = session.createCriteria(Table.class);
-            cr.addOrder(Order.desc("capacity"));
+            cr.addOrder(Order.asc("capacity"));
             results = cr.list();
             transaction.commit();
         } catch (HibernateException e) {
@@ -129,9 +129,11 @@ public class DBHelper {
 
         for (Table table : allTables){
             if (!table.hasDuplicateBooking(booking.getTime())) {
-                addTableToBooking(table, booking);
-                numberToSit -= table.getCapacity();
-                if (numberToSit == 0) break;
+                if (table.getCapacity() >= numberToSit){
+                    addTableToBooking(table, booking);
+                    numberToSit -= table.getCapacity();
+                    if (numberToSit == 0) break;
+                }
             }
         }
 
