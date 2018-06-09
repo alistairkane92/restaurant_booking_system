@@ -1,1 +1,22 @@
-<h2>This is the home vtl</h2>
+<h2>Tonight's Bookings</h2>
+
+<div id="timetable">
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Seating</th>
+        <th>Time</th>
+        <th>Comments</th>
+    </tr>
+#foreach ($booking in $bookings)
+<tr>
+    <td>$booking.getCustomer().getName()</td>
+    <td>$booking.getQuantity()</td>
+    <td>$booking.formatDate()</td>
+    <td>$booking.getAdditionalComment()</td>
+</tr>
+</table>
+</div>
+#end
+
+

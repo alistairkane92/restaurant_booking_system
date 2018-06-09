@@ -10,10 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class DBHelper {
     private static Transaction transaction;
@@ -82,13 +79,13 @@ public class DBHelper {
         return results;
     }
 
-    public static <T> List<T> getAllTablesByNumberOfSeats() {
+    public static <T> List<T> getAllByAscending(String property, Class classType) {
         session = db.HibernateUtil.getSessionFactory().openSession();
         List<T> results = null;
         try {
             transaction = session.beginTransaction();
-            Criteria cr = session.createCriteria(Table.class);
-            cr.addOrder(Order.asc("capacity"));
+            Criteria cr = session.createCriteria(classType);
+            cr.addOrder(Order.asc(property));
             results = cr.list();
             transaction.commit();
         } catch (HibernateException e) {
@@ -124,11 +121,11 @@ public class DBHelper {
     }
 
     public static boolean makeBooking(Booking booking) {
-        List<Table> allTables = getAllTablesByNumberOfSeats();
+        List<Table> allTables = getAllByAscending("capacity", Table.class);
         int numberToSit = booking.getQuantity();
 
         for (Table table : allTables){
-            if (!table.hasDuplicateBooking(booking.getTime())) {
+            if (!table.hasDuplicateBooking(booking.getDate())) {
                 if (table.getCapacity() >= numberToSit){
                     addTableToBooking(table, booking);
                     numberToSit -= table.getCapacity();
@@ -138,5 +135,23 @@ public class DBHelper {
         }
 
         return (numberToSit == 0);
+    }
+
+    public static List<Booking> getBookingsByDate(Calendar calendar) {
+        session = db.HibernateUtil.getSessionFactory().openSession();
+        List<Booking> todaysBookings = new ArrayList<>();
+        List<Booking> allBookings = getAllByAscending("date", Booking.class);
+
+        for (Booking booking : allBookings){
+            if (calendar.get(Calendar.YEAR) == booking.getDate().get(Calendar.YEAR)){
+                if (calendar.get(Calendar.MONTH) == booking.getDate().get(Calendar.MONTH)){
+                    if (calendar.get(Calendar.DAY_OF_MONTH) == booking.getDate().get(Calendar.DAY_OF_MONTH)){
+                        todaysBookings.add(booking);
+                    }
+                }
+            }
+        }
+
+        return todaysBookings;
     }
 }

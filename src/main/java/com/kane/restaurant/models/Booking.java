@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import javax.persistence.Table;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class Booking {
     private Customer customer;
     private int quantity;
     private Set<com.kane.restaurant.models.Table> tables;
-    private Calendar time;
+    private Calendar date;
     private String additionalComment;
 
     public Booking() {
@@ -25,9 +26,9 @@ public class Booking {
     public Booking(Customer booker, int quantity, Calendar bookingTime, String additionalComment) {
         this.customer = booker;
         this.quantity = quantity;
-        this.time = bookingTime;
+        this.date = bookingTime;
         this.additionalComment = additionalComment;
-        this.tables = new HashSet<com.kane.restaurant.models.Table>();
+        this.tables = new HashSet<>();
     }
 
     @Id
@@ -72,13 +73,26 @@ public class Booking {
         this.tables = tables;
     }
 
-    @Column(name="time")
-    public Calendar getTime() {
-        return time;
+    @Column(name="date")
+    public Calendar getDate() {
+        return date;
     }
 
-    public void setTime(Calendar time) {
-        this.time = time;
+    public void setDate(Calendar time) {
+        this.date = time;
+    }
+
+    @Column(name="comments")
+    public String getAdditionalComment() {
+        return additionalComment;
+    }
+
+    public void setAdditionalComment(String additionalComment) {
+        this.additionalComment = additionalComment;
+    }
+
+    public String formatDate(){
+        return this.getDate().get(Calendar.HOUR_OF_DAY) + ":" + this.getDate().get(Calendar.MINUTE);
     }
 
     public void addTable(com.kane.restaurant.models.Table table) {

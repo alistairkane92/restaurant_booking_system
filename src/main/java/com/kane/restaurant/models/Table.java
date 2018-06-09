@@ -5,10 +5,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @javax.persistence.Table(name="tables")
@@ -60,7 +57,7 @@ public class Table {
 
     public boolean hasDuplicateBooking(Calendar date){
         for (Booking booking : this.bookings){
-            if (booking.getTime().equals(date)) {
+            if (booking.getDate().equals(date)) {
                 return true;
             }
         }
