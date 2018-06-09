@@ -1,1 +1,23 @@
 <h2>New Booking</h2>
+
+<form action="/bookings" method="post">
+<input type="date" name="date" value="$todaysDate" required>
+
+<label for="previousCustomer"></label>
+<select name="previousCustomer" id="previousCustomer">
+    #foreach ($customer in $customers)
+    <option value="$customer">$customer.getName()</option>
+    #end
+</select>
+
+<label for="customerName">Customer Name:</label>
+<input type="text" id="customerName">
+
+<label for="numberToSeat">Number Attending:</label>
+<input type="number" id="numberToSeat">
+
+<label for="additionalComment">Requirements:</label>
+<input type="text" id="additionalComment">
+
+    <input type="submit" value="Submit"/>
+</form>
