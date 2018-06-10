@@ -19,6 +19,8 @@ public class Seeds {
         DBHelper.save(customer2);
         Customer customer3 = new Customer("Upul", "upul@codeclan.com");
         DBHelper.save(customer3);
+        Customer customer4 = new Customer("Louise", "louise@codeclan.com");
+        DBHelper.save(customer4);
 
         Table table1 = new Table(4, 1);
         DBHelper.save(table1);
@@ -38,6 +40,7 @@ public class Seeds {
         GregorianCalendar date1 = new GregorianCalendar(2018, Calendar.OCTOBER, 20, 8, 0);
         GregorianCalendar date2 = new GregorianCalendar(2018, Calendar.JUNE, 9, 7, 30);
         GregorianCalendar date3 = new GregorianCalendar(2018, Calendar.JUNE, 9, 9, 30);
+        GregorianCalendar date4 = new GregorianCalendar(2018, Calendar.JUNE, 10, 9, 30);
 
         Booking booking1 = new Booking(customer1, 2, date1, "Peanut allergy");
         DBHelper.save(booking1);
@@ -47,6 +50,9 @@ public class Seeds {
 
         Booking booking3 = new Booking(customer1, 6, date3, ".");
         DBHelper.save(booking3);
+
+        Booking booking4 = new Booking(customer1, 6, date4, ".");
+        DBHelper.save(booking4);
 
         DBHelper.makeBooking(booking1);
         DBHelper.makeBooking(booking2);

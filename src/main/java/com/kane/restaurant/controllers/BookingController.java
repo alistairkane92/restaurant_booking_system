@@ -1,17 +1,18 @@
 package com.kane.restaurant.controllers;
 
 import com.kane.restaurant.db.DBHelper;
+import com.kane.restaurant.models.Booking;
 import com.kane.restaurant.models.Customer;
 import com.kane.restaurant.models.Table;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static spark.Spark.get;
+import static spark.Spark.post;
 
 public class BookingController {
     public BookingController(){ this.setUpEndPoints(); }
@@ -27,11 +28,43 @@ public class BookingController {
             List<Customer> allCustomers = DBHelper.getAllByAscending("name", Customer.class);
             List<Table> allTables = DBHelper.getAllByAscending("capacity", Table.class);
 
+            model.put("todayHour", today.get(Calendar.HOUR_OF_DAY));
             model.put("biggestTableCapacity", allTables.get(allTables.size() - 1).getCapacity());
             model.put("customers", allCustomers);
             model.put("todaysDate", sdf.format(today.getTime()));
             model.put("template", "/templates/bookings/new.vtl");
             return new ModelAndView(model, "/templates/layout.vtl");
+        }, velocityTemplateEngine);
+
+        post("/booking", (req, res) -> {
+            Customer booker = DBHelper.find(Integer.parseInt(req.queryParams("customerId")), Customer.class);
+            String huh = req.queryParams("numberToSeat");
+            int numberToSeat = Integer.parseInt(req.queryParams("numberToSeat"));
+            String additionalComment = req.queryParams("additionalComment");
+            int hour = Integer.parseInt(req.queryParams("hour"));
+            int minute = Integer.parseInt(req.queryParams("minute"));
+
+            //date assigning
+            String dateText = req.queryParams("date");
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date date = new Date();
+            try{
+                date = sdf.parse(dateText);
+            } catch (Exception e) {
+                System.out.println(e);
+                e.printStackTrace();
+            }
+
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(date);
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE, minute);
+            Booking newBooking = new Booking(booker, numberToSeat, cal, additionalComment);
+            DBHelper.save(newBooking);
+            DBHelper.makeBooking(newBooking);
+            res.redirect("/");
+            return null;
         }, velocityTemplateEngine);
     }
 }
