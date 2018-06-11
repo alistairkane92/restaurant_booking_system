@@ -37,25 +37,21 @@ public class Seeds {
         Table table7 = new Table(12, 7);
         DBHelper.save(table7);
 
-        GregorianCalendar date1 = new GregorianCalendar(2018, Calendar.OCTOBER, 20, 8, 0);
-        GregorianCalendar date2 = new GregorianCalendar(2018, Calendar.JUNE, 9, 7, 30);
-        GregorianCalendar date3 = new GregorianCalendar(2018, Calendar.JUNE, 9, 9, 30);
-        GregorianCalendar date4 = new GregorianCalendar(2018, Calendar.JUNE, 10, 9, 30);
+        GregorianCalendar date1 = new GregorianCalendar(2018, Calendar.JUNE, 11, 20, 15);
+        GregorianCalendar date2 = new GregorianCalendar(2018, Calendar.JUNE, 10, 7, 30);
+        GregorianCalendar date3 = new GregorianCalendar(2018, Calendar.JUNE, 10, 9, 30);
+        GregorianCalendar date4 = new GregorianCalendar(2018, Calendar.JUNE, 10, 10, 30);
 
-        Booking booking1 = new Booking(customer1, 2, date1, "Peanut allergy");
-        DBHelper.save(booking1);
-
-        Booking booking2 = new Booking(customer1, 4, date2, "");
-        DBHelper.save(booking2);
-
-        Booking booking3 = new Booking(customer1, 6, date3, ".");
-        DBHelper.save(booking3);
-
-        Booking booking4 = new Booking(customer1, 6, date4, ".");
-        DBHelper.save(booking4);
-
+        Booking booking1 = new Booking(customer1, 12, date1, "Peanut allergy");
         DBHelper.makeBooking(booking1);
-        DBHelper.makeBooking(booking2);
-        DBHelper.makeBooking(booking3);
+//
+//        Booking booking2 = new Booking(customer2, 4, date1, "Needs Highchair");
+//        DBHelper.makeBooking(booking2);
+//
+//        Booking booking3 = new Booking(customer1, 6, date3, ".");
+//        DBHelper.makeBooking(booking3);
+//
+//        Booking booking4 = new Booking(customer1, 6, date4, ".");
+//         DBHelper.makeBooking(booking4);
     }
 }

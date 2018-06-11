@@ -130,7 +130,7 @@ public class DBHelper {
                 if (table.getCapacity() >= numberToSit){
                     addTableToBooking(table, booking);
                     numberToSit -= table.getCapacity();
-                    if (numberToSit == 0) return true;
+                    if (numberToSit <= 0) return true;
                 }
             }
         }

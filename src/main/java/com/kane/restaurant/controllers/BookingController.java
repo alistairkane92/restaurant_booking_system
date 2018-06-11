@@ -61,10 +61,17 @@ public class BookingController {
             cal.set(Calendar.HOUR_OF_DAY, hour);
             cal.set(Calendar.MINUTE, minute);
             Booking newBooking = new Booking(booker, numberToSeat, cal, additionalComment);
-            DBHelper.save(newBooking);
-            DBHelper.makeBooking(newBooking);
-            res.redirect("/");
+            if (DBHelper.makeBooking(newBooking)){
+                res.redirect("/");
+            }
+            res.redirect("/failure");
             return null;
+        }, velocityTemplateEngine);
+
+        get("/failure", (req, res) -> {
+            HashMap<String, Object> model = new HashMap<>();
+            model.put("template", "/templates/bookings/failure.vtl");
+            return new ModelAndView(model, "/templates/layout.vtl");
         }, velocityTemplateEngine);
     }
 }
