@@ -86,8 +86,12 @@ public class BookingController {
             return new ModelAndView(model, "/templates/layout.vtl");
         }, velocityTemplateEngine);
 
-        post("/", (request, response) -> {
-            Customer customer = request.queryParams("customerId");
+        post("/booking/customer", (request, response) -> {
+
+            Customer booker = DBHelper.find(Integer.parseInt(request.queryParams("customerId")), Customer.class);
+            int numberToSeat = request.session().attribute("numberToSeat");
+            String comment = request.queryParams("additionalComment");
+
             GregorianCalendar cal = new GregorianCalendar();
             String dateText = request.session().attribute("date");
             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -104,6 +108,9 @@ public class BookingController {
             cal.set(Calendar.HOUR_OF_DAY, request.session().attribute("hour"));
             cal.set(Calendar.MINUTE, request.session().attribute("minute"));
 
+            Booking booking = new Booking(booker, numberToSeat, cal, comment);
+            DBHelper.makeBooking(booking);
+            response.redirect("/");
             return null;
         }, velocityTemplateEngine);
     }
