@@ -61,6 +61,7 @@ public class BookingController {
             if (DBHelper.isBookingPossible(cal, numberToSeat)){
                 req.session().attribute("hour", hour);
                 req.session().attribute("minute", minute);
+                req.session().attribute("date", dateText);
                 req.session().attribute("numberToSeat", numberToSeat);
                 res.redirect("/booking/customer");
             }
@@ -79,9 +80,31 @@ public class BookingController {
             model.put("hour", req.session().attribute("hour"));
             model.put("minute", req.session().attribute("minute"));
             model.put("numberToSeat", req.session().attribute("numberToSeat"));
+            model.put("date", req.session().attribute("date"));
             model.put("customers", DBHelper.getAllByAscending("name", Customer.class));
             model.put("template", "/templates/bookings/verify_customer.vtl");
             return new ModelAndView(model, "/templates/layout.vtl");
+        }, velocityTemplateEngine);
+
+        post("/", (request, response) -> {
+            Customer customer = request.queryParams("customerId");
+            GregorianCalendar cal = new GregorianCalendar();
+            String dateText = request.session().attribute("date");
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date date = new Date();
+            try{
+                date = sdf.parse(dateText);
+            } catch (Exception e) {
+                System.out.println(e);
+                e.printStackTrace();
+            }
+
+            cal.setTime(date);
+            cal.set(Calendar.HOUR_OF_DAY, request.session().attribute("hour"));
+            cal.set(Calendar.MINUTE, request.session().attribute("minute"));
+
+            return null;
         }, velocityTemplateEngine);
     }
 }

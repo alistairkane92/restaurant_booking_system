@@ -1,7 +1,9 @@
 <h1>Booking Available for:</h1>
+<h2>Date: $date</h2>
 <h2>Time: $hour:$minute</h2>
 <h2>Number To Sit: $numberToSeat</h2>
 
+<form action="/booking/customer" method="POST">
 <label for="customerDropDown">Select Customer</label>
 <select name="customerId" id="customerDropDown">
     #foreach ($customer in $customers)
@@ -11,3 +13,6 @@
 
 <label for="additionalComment">Requirements:</label>
 <input type="text" name="additionalComment" id="additionalComment">
+
+<input type="submit" value="Submit"/>
+</form>
