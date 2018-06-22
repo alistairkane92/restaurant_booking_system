@@ -19,6 +19,7 @@ public class BookingController {
 
     private void setUpEndPoints() {
         VelocityTemplateEngine velocityTemplateEngine = new VelocityTemplateEngine();
+        GregorianCalendar tempCal = new GregorianCalendar();
 
         get("/booking", (req, res) -> {
             HashMap<String, Object> model = new HashMap<>();
@@ -53,12 +54,11 @@ public class BookingController {
                 e.printStackTrace();
             }
 
-            GregorianCalendar cal = new GregorianCalendar();
-            cal.setTime(date);
-            cal.set(Calendar.HOUR_OF_DAY, hour);
-            cal.set(Calendar.MINUTE, minute);
+            tempCal.setTime(date);
+            tempCal.set(Calendar.HOUR_OF_DAY, hour);
+            tempCal.set(Calendar.MINUTE, minute);
 
-            if (DBHelper.isBookingPossible(cal, numberToSeat)){
+            if (DBHelper.isBookingPossible(tempCal, numberToSeat)){
                 req.session().attribute("hour", hour);
                 req.session().attribute("minute", minute);
                 req.session().attribute("date", dateText);
@@ -87,28 +87,10 @@ public class BookingController {
         }, velocityTemplateEngine);
 
         post("/booking/customer", (request, response) -> {
-
             Customer booker = DBHelper.find(Integer.parseInt(request.queryParams("customerId")), Customer.class);
             int numberToSeat = request.session().attribute("numberToSeat");
             String comment = request.queryParams("additionalComment");
-
-            GregorianCalendar cal = new GregorianCalendar();
-            String dateText = request.session().attribute("date");
-            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-            Date date = new Date();
-            try{
-                date = sdf.parse(dateText);
-            } catch (Exception e) {
-                System.out.println(e);
-                e.printStackTrace();
-            }
-
-            cal.setTime(date);
-            cal.set(Calendar.HOUR_OF_DAY, request.session().attribute("hour"));
-            cal.set(Calendar.MINUTE, request.session().attribute("minute"));
-
-            Booking booking = new Booking(booker, numberToSeat, cal, comment);
+            Booking booking = new Booking(booker, numberToSeat, tempCal, comment);
             DBHelper.makeBooking(booking);
             response.redirect("/");
             return null;
