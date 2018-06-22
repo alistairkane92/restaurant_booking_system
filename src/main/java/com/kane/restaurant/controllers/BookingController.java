@@ -37,10 +37,7 @@ public class BookingController {
         }, velocityTemplateEngine);
 
         post("/booking", (req, res) -> {
-            Customer booker = DBHelper.find(Integer.parseInt(req.queryParams("customerId")), Customer.class);
-            String huh = req.queryParams("numberToSeat");
             int numberToSeat = Integer.parseInt(req.queryParams("numberToSeat"));
-            String additionalComment = req.queryParams("additionalComment");
             int hour = Integer.parseInt(req.queryParams("hour"));
             int minute = Integer.parseInt(req.queryParams("minute"));
 
@@ -60,9 +57,12 @@ public class BookingController {
             cal.setTime(date);
             cal.set(Calendar.HOUR_OF_DAY, hour);
             cal.set(Calendar.MINUTE, minute);
-            Booking newBooking = new Booking(booker, numberToSeat, cal, additionalComment);
-            if (DBHelper.makeBooking(newBooking)){
-                res.redirect("/");
+
+            if (DBHelper.isBookingPossible(cal, numberToSeat)){
+                req.session().attribute("hour", hour);
+                req.session().attribute("minute", minute);
+                req.session().attribute("numberToSeat", numberToSeat);
+                res.redirect("/booking/customer");
             }
             res.redirect("/failure");
             return null;
@@ -71,6 +71,16 @@ public class BookingController {
         get("/failure", (req, res) -> {
             HashMap<String, Object> model = new HashMap<>();
             model.put("template", "/templates/bookings/failure.vtl");
+            return new ModelAndView(model, "/templates/layout.vtl");
+        }, velocityTemplateEngine);
+
+        get("/booking/customer", (req, res) -> {
+            HashMap<String, Object> model = new HashMap<>();
+            model.put("hour", req.session().attribute("hour"));
+            model.put("minute", req.session().attribute("minute"));
+            model.put("numberToSeat", req.session().attribute("numberToSeat"));
+            model.put("customers", DBHelper.getAllByAscending("name", Customer.class));
+            model.put("template", "/templates/bookings/verify_customer.vtl");
             return new ModelAndView(model, "/templates/layout.vtl");
         }, velocityTemplateEngine);
     }

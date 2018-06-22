@@ -1,0 +1,13 @@
+<h1>Booking Available for:</h1>
+<h2>Time: $hour:$minute</h2>
+<h2>Number To Sit: $numberToSeat</h2>
+
+<label for="customerDropDown">Select Customer</label>
+<select name="customerId" id="customerDropDown">
+    #foreach ($customer in $customers)
+    <option value="$customer.getId()">$customer.getName()</option>
+    #end
+</select>
+
+<label for="additionalComment">Requirements:</label>
+<input type="text" name="additionalComment" id="additionalComment">
