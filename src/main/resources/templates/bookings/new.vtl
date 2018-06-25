@@ -1,14 +1,7 @@
 <h2>New Booking</h2>
 
-<form action="/booking" method="post">
+<form action="/booking" method="POST">
 <input type="date" name="date" value="$todaysDate" required="required">
-
-<label for="customerDropDown">Select Customer</label>
-<select name="customerId" id="customerDropDown">
-    #foreach ($customer in $customers)
-    <option value="$customer.getId()">$customer.getName()</option>
-    #end
-</select>
 
 <label for="hour">Hour</label>
 <select name="hour" id="hour">
@@ -36,13 +29,8 @@
     <option value="45">45</option>
 </select>
 
-<a href="/customer">or Add New Customer</a>
-
 <label for="numberToSeat">Number Attending:</label>
-<input type="number" name="numberToSeat" id="numberToSeat" min="1" max="$biggestTableCapacity">
-
-<label for="additionalComment">Requirements:</label>
-<input type="text" name="additionalComment" id="additionalComment">
+<input type="number" name="numberToSeat" id="numberToSeat" min="1" max="$biggestTableCapacity" value="1">
 
 <input type="submit" value="Submit"/>
 </form>

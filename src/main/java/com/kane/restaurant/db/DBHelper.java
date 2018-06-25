@@ -155,4 +155,19 @@ public class DBHelper {
 
         return todaysBookings;
     }
+
+    public static boolean isBookingPossible(GregorianCalendar calendar, int numberToSit){
+        List<Table> allTables = getAll(Table.class);
+
+        for (Table table : allTables){
+            if (!table.hasDuplicateBooking(calendar)){
+                if (table.getCapacity() >= numberToSit){
+                    numberToSit -= table.getCapacity();
+                    if (numberToSit <= 0) return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }
